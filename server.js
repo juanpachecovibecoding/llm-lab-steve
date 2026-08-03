@@ -125,6 +125,12 @@ function fixHtml(html, game, level) {
     .locale-selector,
     [class*="smallFooter"],
     [class*="SmallFooter"] { display: none !important; }
+
+    /* ── Responsive Game Header ── */
+    @media (max-width: 600px) {
+      #logo_home_link { padding: 0 6px !important; }
+      #logo_home_link svg { width: 28px !important; height: 28px !important; margin-top: 8px !important; }
+    }
   </style>
 
   <script>
@@ -476,7 +482,22 @@ function buildMenu() {
     .dirt{height:32px;background:repeating-linear-gradient(90deg,#8B6143 0,#8B6143 16px,#7a5235 16px,#7a5235 32px,#9c7050 32px,#9c7050 48px,#6b4423 48px,#6b4423 64px);border-top:3px solid #3d2b12}
     .foot{background:#1a0f08;text-align:center;padding:12px;font-family:'Press Start 2P',monospace;font-size:7px;color:#5D4037;letter-spacing:1px}
 
-    @media(max-width:600px){.logo-txt{font-size:12px}.grid{grid-template-columns:1fr 1fr;gap:16px}.card-title{font-size:7px}.play-btn{font-size:8px}}
+    @media (max-width: 1024px) {
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 22px; }
+      .logo-txt { font-size: clamp(12px, 2.2vw, 18px); }
+    }
+    @media (max-width: 640px) {
+      .wrap { padding: 24px 14px 0; }
+      .hdr { margin-bottom: 28px; }
+      .logo-box { padding: 10px 16px; margin-bottom: 14px; border-width: 3px; border-bottom-width: 4px; border-right-width: 4px; }
+      .logo-txt { font-size: clamp(10px, 3.8vw, 14px); }
+      .sub { font-size: 16px; letter-spacing: 1px; margin-top: 4px; }
+      .grid { grid-template-columns: 1fr; gap: 20px; }
+      .card-title { font-size: 10px; min-height: auto; margin-bottom: 8px; }
+      .card-desc { font-size: 18px; margin-bottom: 14px; }
+      .play-btn { font-size: 9px; padding: 12px 10px; }
+      .foot { font-size: 6px; padding: 10px 6px; }
+    }
   </style>
 </head>
 <body>

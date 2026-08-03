@@ -32,10 +32,10 @@ const MIME = {
 
 // ── Games config ──────────────────────────────────────────────────────────────
 const GAMES = {
-  mc:        { name: 'Aventurero de Minecraft',  levels: 14, emoji: '⛏️'  },
-  minecraft: { name: 'Diseñador de Minecraft',   levels: 12, emoji: '🏗️'  },
-  aquatic:   { name: 'Voyage Aquatic',           levels: 12, emoji: '🐠'  },
-  hero:      { name: 'El Viaje del Héroe',       levels: 12, emoji: '🦸'  },
+  mc:        { name: 'Aventurero de Minecraft', age: '6+ años', description: 'Guía a Steve o Alex por un mapa lineal y usa bloques básicos de movimiento para completar misiones sencillas.', levels: 14, emoji: '⛏️' },
+  minecraft: { name: 'Minecraft Diseñador',    age: '7+ años', description: 'Programa tus propias reglas de juego y controla el comportamiento de los monstruos mediante eventos de causa y efecto.', levels: 12, emoji: '🏗️' },
+  hero:      { name: 'El viaje del héroe',      age: '8+ años', description: 'Coordina tus acciones con un ayudante robótico y utiliza funciones complejas para superar obstáculos difíciles.', levels: 12, emoji: '🦸' },
+  aquatic:   { name: 'Viaje acuático',          age: '9+ años', description: 'Explora el fondo del océano y resuelve acertijos avanzados combinando bucles con condicionales lógicos.', levels: 12, emoji: '🐠' },
 };
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -345,10 +345,12 @@ function buildMenu() {
          style="--bc:${a.border};--gc:${a.glow};">
       <div class="card-img-wrap">
         <img src="${imgs[id]}" alt="${g.name}" class="card-img" loading="lazy">
+        <div class="card-age-badge">${g.age}</div>
         <div class="card-badge" style="background:${a.badge}">${g.levels} niveles</div>
       </div>
       <div class="card-body">
         <div class="card-title">${g.name}</div>
+        <p class="card-desc">${g.description}</p>
         <button class="play-btn" style="--b1:${a.btn1};--b2:${a.btn2}">
           <span>▶</span> JUGAR
         </button>
@@ -400,17 +402,19 @@ function buildMenu() {
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;width:100%}
 
     /* Card */
-    .game-card{background:#111820;border:3px solid var(--bc,#555);border-bottom-width:5px;border-right-width:5px;cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
+    .game-card{background:#111820;border:3px solid var(--bc,#555);border-bottom-width:5px;border-right-width:5px;cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden;display:flex;flex-direction:column}
     .game-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.04) 0%,transparent 50%);pointer-events:none}
     .game-card:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--bc),6px 6px 30px var(--gc)}
     .game-card:active{transform:translate(0,0);box-shadow:2px 2px 0 var(--bc)}
-    .card-img-wrap{position:relative;width:100%;aspect-ratio:1;overflow:hidden}
+    .card-img-wrap{position:relative;width:100%;aspect-ratio:1.25;overflow:hidden}
     .card-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;image-rendering:pixelated}
     .game-card:hover .card-img{transform:scale(1.05)}
     .card-badge{position:absolute;top:10px;right:10px;font-family:'Press Start 2P',monospace;font-size:8px;color:#fff;padding:5px 8px;border:2px solid rgba(255,255,255,.3);border-bottom-width:3px;border-right-width:3px;text-shadow:1px 1px 0 #000}
-    .card-body{padding:16px 18px 18px;border-top:3px solid var(--bc);background:linear-gradient(180deg,#161e2a 0%,#0e1520 100%)}
-    .card-title{font-family:'Press Start 2P',monospace;font-size:clamp(8px,1.1vw,11px);color:#e8e8e8;line-height:1.7;margin-bottom:14px;min-height:40px}
-    .play-btn{width:100%;font-family:'Press Start 2P',monospace;font-size:10px;color:#fff;background:linear-gradient(180deg,var(--b1) 0%,var(--b2) 100%);border:none;border-bottom:4px solid rgba(0,0,0,.4);border-right:4px solid rgba(0,0,0,.3);border-top:2px solid rgba(255,255,255,.2);border-left:2px solid rgba(255,255,255,.15);padding:12px 10px;cursor:pointer;letter-spacing:2px;text-shadow:1px 1px 0 rgba(0,0,0,.5);transition:filter .1s,transform .1s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .card-age-badge{position:absolute;top:10px;left:10px;font-family:'Press Start 2P',monospace;font-size:8px;color:#0d1520;background:#ffd54f;padding:5px 8px;border:2px solid #ffb300;border-bottom-width:3px;border-right-width:3px;font-weight:bold;text-shadow:none}
+    .card-body{padding:16px 18px 18px;border-top:3px solid var(--bc);background:linear-gradient(180deg,#161e2a 0%,#0e1520 100%);display:flex;flex-direction:column;flex-grow:1}
+    .card-title{font-family:'Press Start 2P',monospace;font-size:clamp(8px,1.1vw,11px);color:#fff;line-height:1.6;margin-bottom:10px;min-height:36px}
+    .card-desc{font-family:'VT323',monospace;font-size:19px;color:#b0bec5;line-height:1.3;margin-bottom:16px;flex-grow:1}
+    .play-btn{width:100%;font-family:'Press Start 2P',monospace;font-size:10px;color:#fff;background:linear-gradient(180deg,var(--b1) 0%,var(--b2) 100%);border:none;border-bottom:4px solid rgba(0,0,0,.4);border-right:4px solid rgba(0,0,0,.3);border-top:2px solid rgba(255,255,255,.2);border-left:2px solid rgba(255,255,255,.15);padding:12px 10px;cursor:pointer;letter-spacing:2px;text-shadow:1px 1px 0 rgba(0,0,0,.5);transition:filter .1s,transform .1s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:auto}
     .play-btn:hover{filter:brightness(1.2)}
     .play-btn:active{transform:translateY(2px);border-bottom-width:2px}
 

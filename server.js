@@ -199,26 +199,55 @@ function fixHtml(html, game, level) {
       [300, 800, 1500, 3000].forEach(function(t){ setTimeout(hideHelp, t); });
     })();
 
-    /* Disable intro autoplay video */
+    /* Disable intro autoplay video & patch appOptions for milestone modal */
     (function () {
+      function fixOptions(v) {
+        if (!v) return v;
+        if (v.autoplayVideo) v.autoplayVideo = null;
+        var p = window.location.pathname.split('/');
+        var g = p[2] || '${game}';
+        var l = parseInt(p[3] || '${level}', 10);
+        var nUrl = '/play/' + g + '/' + (l + 1);
+
+        if (v.dialog) {
+          v.dialog.shouldShowDialog = true;
+        }
+        if (v.report && v.report.fallback_response) {
+          try {
+            var fb = typeof v.report.fallback_response === 'string' ? JSON.parse(v.report.fallback_response) : v.report.fallback_response;
+            if (fb && fb.success) {
+              fb.success.redirect = nUrl;
+              fb.success.new_level_completed = true;
+            }
+            v.report.fallback_response = typeof v.report.fallback_response === 'string' ? JSON.stringify(fb) : fb;
+          } catch(e){}
+        }
+        return v;
+      }
+
       var _origParse = JSON.parse;
       JSON.parse = function(s) {
         var r = _origParse.apply(this, arguments);
-        if (r && r.autoplayVideo !== undefined) r.autoplayVideo = null;
+        if (r && (r.autoplayVideo !== undefined || r.dialog !== undefined || r.report !== undefined)) {
+          fixOptions(r);
+        }
         return r;
       };
-      Object.defineProperty(window, 'appOptions', {
-        set: function(v) {
-          if (v && v.autoplayVideo) v.autoplayVideo = null;
-          Object.defineProperty(window, 'appOptions', { value: v, writable: true });
-        },
-        configurable: true,
-      });
+
+      try {
+        Object.defineProperty(window, 'appOptions', {
+          get: function() { return window._appOptions; },
+          set: function(v) {
+            window._appOptions = fixOptions(v);
+          },
+          configurable: true,
+        });
+      } catch(e){}
     })();
 
     /* ── OFFLINE / VERCEL API INTERCEPTOR ──────────────────────────────────
-       Intercepts XHR / fetch milestone calls so congratulations dialog appears
-       both offline and when hosted on Vercel without a backend server.
+       Intercepts XHR / fetch / jQuery.ajax milestone calls so congratulations
+       dialog appears both offline and when hosted on Vercel.
     ──────────────────────────────────────────────────────────────────── */
     (function () {
       function getNextLevelUrl() {
@@ -228,19 +257,52 @@ function fixHtml(html, game, level) {
         return '/play/' + g + '/' + (l + 1);
       }
 
-      function getMilestoneResponse() {
+      function getMilestoneObj() {
         var nUrl = getNextLevelUrl();
-        return JSON.stringify({
+        return {
           redirect: nUrl,
           next_level_url: nUrl,
           new_level_completed: true,
           puzzle_ratings_enabled: false,
           share_url: null,
-          phone_share_url: null
-        });
+          phone_share_url: null,
+          success: {
+            redirect: nUrl,
+            new_level_completed: true
+          }
+        };
       }
 
-      /* --- XMLHttpRequest patch --- */
+      /* 1. Intercept jQuery.ajax */
+      function patchJQuery() {
+        if (window.jQuery && window.jQuery.ajax) {
+          var _ajax = window.jQuery.ajax;
+          window.jQuery.ajax = function(url, options) {
+            if (typeof url === 'object') {
+              options = url;
+              url = options ? options.url : '';
+            }
+            if (url && (url.indexOf('milestone') !== -1 || url.indexOf('/api/v1/') !== -1)) {
+              var obj = getMilestoneObj();
+              if (options && typeof options.success === 'function') {
+                setTimeout(function() { options.success(obj); }, 10);
+              }
+              if (options && typeof options.complete === 'function') {
+                setTimeout(function() { options.complete({ status: 200, responseJSON: obj }, 'success'); }, 20);
+              }
+              var d = window.jQuery.Deferred();
+              d.resolve(obj);
+              return d.promise();
+            }
+            return _ajax.apply(this, arguments);
+          };
+        } else {
+          setTimeout(patchJQuery, 50);
+        }
+      }
+      patchJQuery();
+
+      /* 2. Intercept XMLHttpRequest with event dispatching */
       var _xhrOpen = XMLHttpRequest.prototype.open;
       var _xhrSend = XMLHttpRequest.prototype.send;
       XMLHttpRequest.prototype.open = function (method, url) {
@@ -250,12 +312,17 @@ function fixHtml(html, game, level) {
       XMLHttpRequest.prototype.send = function (body) {
         if (this._url && this._url.indexOf('milestone') !== -1) {
           var self = this;
-          var resp = getMilestoneResponse();
-          Object.defineProperty(self, 'status', { value: 200, writable: true });
-          Object.defineProperty(self, 'readyState', { value: 4, writable: true });
-          Object.defineProperty(self, 'responseText', { value: resp, writable: true });
-          Object.defineProperty(self, 'response', { value: resp, writable: true });
+          var respText = JSON.stringify(getMilestoneObj());
           setTimeout(function () {
+            try {
+              Object.defineProperty(self, 'status', { value: 200, writable: true });
+              Object.defineProperty(self, 'statusText', { value: 'OK', writable: true });
+              Object.defineProperty(self, 'readyState', { value: 4, writable: true });
+              Object.defineProperty(self, 'responseText', { value: respText, writable: true });
+              Object.defineProperty(self, 'response', { value: respText, writable: true });
+            } catch(e){}
+            try { self.dispatchEvent(new Event('readystatechange')); } catch(e){}
+            try { self.dispatchEvent(new Event('load')); } catch(e){}
             if (typeof self.onreadystatechange === 'function') self.onreadystatechange();
             if (typeof self.onload === 'function') self.onload();
           }, 10);
@@ -264,14 +331,14 @@ function fixHtml(html, game, level) {
         return _xhrSend.apply(this, arguments);
       };
 
-      /* --- fetch patch --- */
+      /* 3. Intercept fetch */
       if (typeof window.fetch === 'function') {
         var _origFetch = window.fetch;
         window.fetch = function (resource, options) {
           var urlStr = (typeof resource === 'string') ? resource : (resource && resource.url) ? resource.url : '';
           if (urlStr && urlStr.indexOf('milestone') !== -1) {
-            var resp = getMilestoneResponse();
-            return Promise.resolve(new Response(resp, {
+            var respText = JSON.stringify(getMilestoneObj());
+            return Promise.resolve(new Response(respText, {
               status: 200,
               headers: { 'Content-Type': 'application/json' }
             }));
@@ -292,6 +359,9 @@ function fixHtml(html, game, level) {
     .replace(/<script[^>]+onetrust[^>]*><\/script>/g, '')
     .replace(/<script[^>]+googletagmanager[^>]*><\/script>/g, '')
     .replace(/<script[^>]+_google_analytics[^>]*><\/script>/g, '')
+    // Strip studio.code.org domain references
+    .replace(/https:\/\/studio\.code\.org/g, '')
+    .replace(/\/\/studio\.code\.org/g, '')
     // Replace Code.org logo link and image with Home icon
     .replace(/<a id="logo_home_link" href="[^"]*"><img [^>]*><\/a>/g,
       '<a id="logo_home_link" href="https://minecraft-hoc-offline.vercel.app" title="Inicio" style="display:flex;align-items:center;height:100%;padding:0 12px;text-decoration:none;"><svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" style="margin-top:12px;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></a>')
@@ -299,6 +369,7 @@ function fixHtml(html, game, level) {
     .replace(/href="https:\/\/code\.org"/g, 'href="https://minecraft-hoc-offline.vercel.app"')
     // Update next level redirects in HTML
     .replace(/\/courses\/[\w-]+\/units\/\d+\/lessons\/\d+\/levels\/(\d+)/g, '/play/' + game + '/$1')
+    .replace(/\/s\/[\w-]+\/lessons\/\d+\/levels\/(\d+)/g, '/play/' + game + '/$1')
     // Inject our styles + scripts right before </title>
     .replace('</title>', `</title>\n${injection}`);
 }

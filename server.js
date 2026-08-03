@@ -157,23 +157,6 @@ function fixHtml(html, game, level) {
         '[class*="AuthoredHints"]','[id="authored-hints"]',
         '[id="hints-and-videos"]',
       ];
-      var TOP_RIGHT = ['.header_right', '#help-button', '#hamburger', '#sign_in_or_user', '.header_button', '.help_button'];
-      var RESTART = ['volver a empezar','reiniciar','start over','try again','restart'];
-
-      function patchRestart() {
-        document.querySelectorAll('button,[role="button"]').forEach(function(btn) {
-          if (btn._rp) return;
-          var txt = btn.textContent.trim().toLowerCase();
-          if (RESTART.some(function(t){ return txt.indexOf(t) !== -1; })) {
-            btn._rp = true;
-            btn.addEventListener('click', function(e) {
-              e.preventDefault(); e.stopImmediatePropagation();
-              window.location.reload();
-            }, true);
-          }
-        });
-      }
-
       function patchLogo() {
         document.querySelectorAll('#logo_home_link, .header_logo a').forEach(function(a){
           a.href = 'https://minecraft-hoc-offline.vercel.app';
@@ -210,7 +193,6 @@ function fixHtml(html, game, level) {
             }
           }
         });
-        patchRestart();
       }
 
       document.addEventListener('DOMContentLoaded', hideHelp);

@@ -95,6 +95,15 @@ function fixHtml(html, game, level) {
   // Styles + MutationObserver to hide the "Need help?" panel
   const injection = `
   <style>
+    /* ── Hide top-right header menu & broken icons ── */
+    .header_right,
+    #help-button,
+    #hamburger,
+    #sign_in_or_user,
+    .header_button,
+    .show-small-desktop,
+    .help_button { display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
+
     /* ── Hide "Need help?" sidebar — CSS fallback ── */
     [class*="hintsAndVideos"],[class*="HintsAndVideos"],
     [class*="videoThumbnail"],[class*="VideoWithCallout"],
@@ -124,6 +133,7 @@ function fixHtml(html, game, level) {
         '[class*="AuthoredHints"]','[id="authored-hints"]',
         '[id="hints-and-videos"]',
       ];
+      var TOP_RIGHT = ['.header_right', '#help-button', '#hamburger', '#sign_in_or_user', '.header_button', '.help_button'];
       var RESTART = ['volver a empezar','reiniciar','start over','try again','restart'];
 
       function patchRestart() {
@@ -141,6 +151,12 @@ function fixHtml(html, game, level) {
       }
 
       function hideHelp() {
+        // Hide top right menu / broken icons
+        TOP_RIGHT.forEach(function(s){
+          try { document.querySelectorAll(s).forEach(function(el){
+            el.style.setProperty('display','none','important');
+          }); } catch(e){}
+        });
         // Hide help panels
         SEL.forEach(function(s){
           try { document.querySelectorAll(s).forEach(function(el){

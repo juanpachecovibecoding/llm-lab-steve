@@ -92,74 +92,9 @@ function proxyToCodeOrg(req, res, reqPath) {
 
 // ── fixHtml: patch the game HTML for offline use ─────────────────────────────
 function fixHtml(html, game, level) {
-  const totalLevels = GAMES[game] ? GAMES[game].levels : 14;
-  const prevLevel   = level > 1            ? level - 1 : null;
-  const nextLevel   = level < totalLevels  ? level + 1 : null;
-
-  // Bottom navigation bar
-  const navBar = `
-  <div id="offline-nav">
-    ${prevLevel
-      ? `<a class="onb onb-side" href="/play/${game}/${prevLevel}">◀ Anterior</a>`
-      : `<span class="onb onb-side onb-off">◀ Anterior</span>`}
-    <a class="onb onb-home" href="/">⌂ Menú</a>
-    ${nextLevel
-      ? `<a class="onb onb-side onb-next" href="/play/${game}/${nextLevel}">Siguiente ▶</a>`
-      : `<span class="onb onb-side onb-off">Siguiente ▶</span>`}
-  </div>`;
-
   // Styles + MutationObserver to hide the "Need help?" panel
   const injection = `
   <style>
-    /* ── Hide Code.org default header ── */
-    header.header-wrapper,
-    .header-wrapper,
-    .navbar-static-top.header,
-    .navbar-static-top,
-    #header-banner,
-    header[role="banner"],
-    .header_container,
-    #learn-header,
-    #top-header,
-    nav[aria-label] { display: none !important; }
-    /* Push content down so our nav doesn't overlap it */
-    #level-body, #visualization-column,
-    #main-development-column, .full-width-div-wrapper,
-    #react-header + *, body > div:first-child { margin-top: 0 !important; }
-
-    /* ── Offline nav bar — fixed to TOP ── */
-    #offline-nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 99999;
-      display: flex; justify-content: center; align-items: center; gap: 8px;
-      background: rgba(0,0,0,0.92); padding: 7px 12px;
-      border-bottom: 2px solid #5D8233;
-    }
-    .onb {
-      font-family: 'Press Start 2P', 'Courier New', monospace;
-      font-size: 10px; color: #fff; text-decoration: none;
-      background: #2a2a2a; padding: 7px 16px;
-      border: 2px solid #5D8233; border-bottom: 3px solid #3d5c1f;
-      cursor: pointer; transition: background 0.1s;
-    }
-    .onb:hover  { background: #5D8233; }
-    .onb-home   { border-color: #777; border-bottom-color: #444; }
-    .onb-home:hover { background: #444; }
-    .onb-off    { opacity: 0.3; pointer-events: none; }
-    body        { padding-top: 50px !important; padding-bottom: 0 !important; }
-
-    /* ── Siguiente button — neon pulse ── */
-    .onb-next {
-      border-color: #39ff14 !important;
-      border-bottom-color: #1a8a00 !important;
-      color: #39ff14 !important;
-      animation: neon-pulse 1.6s ease-in-out infinite;
-    }
-    .onb-next:hover { background: #1a3a00 !important; color: #fff !important; }
-    @keyframes neon-pulse {
-      0%,100% { box-shadow: 0 0 4px #39ff14, 0 0 12px #39ff14, 0 0 24px #39ff14; border-color: #39ff14; }
-      50%      { box-shadow: 0 0 2px #39ff14, 0 0  5px #39ff14, 0 0  8px #39ff14; border-color: #1fcc00; }
-    }
-
     /* ── Hide "Need help?" sidebar — CSS fallback ── */
     [class*="hintsAndVideos"],[class*="HintsAndVideos"],
     [class*="videoThumbnail"],[class*="VideoWithCallout"],
@@ -205,33 +140,7 @@ function fixHtml(html, game, level) {
         });
       }
 
-      var HDR_SEL = [
-        'header.header-wrapper',
-        '.header-wrapper',
-        '.navbar-static-top',
-        '#header-banner',
-        'header[role="banner"]',
-        '.header_container',
-        '#learn-header',
-        '#top-header',
-        '[class*="HeaderBanner"]',
-        '[class*="header-banner"]',
-        'nav[aria-label]',
-        '#page-small-footer',
-        '.page-small-footer',
-        '[data-smallfooter]',
-        '.small-footer',
-        '[class*="smallFooter"]',
-        '[class*="SmallFooter"]',
-      ];
-
       function hideHelp() {
-        // Hide Code.org header
-        HDR_SEL.forEach(function(s){
-          try { document.querySelectorAll(s).forEach(function(el){
-            el.style.setProperty('display','none','important');
-          }); } catch(e){}
-        });
         // Hide help panels
         SEL.forEach(function(s){
           try { document.querySelectorAll(s).forEach(function(el){
@@ -320,9 +229,7 @@ function fixHtml(html, game, level) {
     .replace(/<script[^>]+googletagmanager[^>]*><\/script>/g, '')
     .replace(/<script[^>]+_google_analytics[^>]*><\/script>/g, '')
     // Inject our styles + scripts right before </title>
-    .replace('</title>', `</title>\n${injection}`)
-    // Append nav bar at end of body
-    + navBar;
+    .replace('</title>', `</title>\n${injection}`);
 }
 
 // ── Landing menu ──────────────────────────────────────────────────────────────

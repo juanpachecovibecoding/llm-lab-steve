@@ -128,6 +128,26 @@ function fixHtml(html, game, level) {
   </style>
 
   <script>
+    /* ── Analytics & Tracking Stubs (prevents trackEvent Uncaught TypeError) ── */
+    (function () {
+      var noop = function () {};
+      if (typeof window.ga !== 'function') {
+        window.ga = noop;
+      }
+      if (typeof window.trackEvent !== 'function') {
+        window.trackEvent = noop;
+      }
+      if (!window.newrelic) {
+        window.newrelic = {
+          noticeError: noop,
+          finished: noop,
+          recordCustomEvent: noop,
+          addPageAction: noop,
+          setCustomAttribute: noop
+        };
+      }
+    })();
+
     /* Remove "Need help?" panel + intercept Reiniciar to reload page */
     (function () {
       var SEL = [

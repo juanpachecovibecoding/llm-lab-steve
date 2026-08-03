@@ -350,7 +350,7 @@ function buildMenu() {
       </div>
       <div class="card-body">
         <div class="card-title">${g.name}</div>
-        <p class="card-desc">${g.description}</p>
+        <p class="card-desc"><span class="desc-age">(${g.age})</span> ${g.description}</p>
         <button class="play-btn" style="--b1:${a.btn1};--b2:${a.btn2}">
           <span>▶</span> JUGAR
         </button>
@@ -414,6 +414,7 @@ function buildMenu() {
     .card-body{padding:16px 18px 18px;border-top:3px solid var(--bc);background:linear-gradient(180deg,#161e2a 0%,#0e1520 100%);display:flex;flex-direction:column;flex-grow:1}
     .card-title{font-family:'Press Start 2P',monospace;font-size:clamp(8px,1.1vw,11px);color:#fff;line-height:1.6;margin-bottom:10px;min-height:36px}
     .card-desc{font-family:'VT323',monospace;font-size:19px;color:#b0bec5;line-height:1.3;margin-bottom:16px;flex-grow:1}
+    .desc-age{color:#ffd54f;font-weight:bold;margin-right:4px}
     .play-btn{width:100%;font-family:'Press Start 2P',monospace;font-size:10px;color:#fff;background:linear-gradient(180deg,var(--b1) 0%,var(--b2) 100%);border:none;border-bottom:4px solid rgba(0,0,0,.4);border-right:4px solid rgba(0,0,0,.3);border-top:2px solid rgba(255,255,255,.2);border-left:2px solid rgba(255,255,255,.15);padding:12px 10px;cursor:pointer;letter-spacing:2px;text-shadow:1px 1px 0 rgba(0,0,0,.5);transition:filter .1s,transform .1s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:auto}
     .play-btn:hover{filter:brightness(1.2)}
     .play-btn:active{transform:translateY(2px);border-bottom-width:2px}

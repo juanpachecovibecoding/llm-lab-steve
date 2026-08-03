@@ -150,7 +150,18 @@ function fixHtml(html, game, level) {
         });
       }
 
+      function patchLogo() {
+        document.querySelectorAll('#logo_home_link, .header_logo a').forEach(function(a){
+          a.href = 'https://minecraft-hoc-offline.vercel.app';
+          if (!a._patched) {
+            a._patched = true;
+            a.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" style="margin-top:12px;vertical-align:middle;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>';
+          }
+        });
+      }
+
       function hideHelp() {
+        patchLogo();
         // Hide top right menu / broken icons
         TOP_RIGHT.forEach(function(s){
           try { document.querySelectorAll(s).forEach(function(el){
@@ -244,6 +255,11 @@ function fixHtml(html, game, level) {
     .replace(/<script[^>]+onetrust[^>]*><\/script>/g, '')
     .replace(/<script[^>]+googletagmanager[^>]*><\/script>/g, '')
     .replace(/<script[^>]+_google_analytics[^>]*><\/script>/g, '')
+    // Replace Code.org logo link and image with Home icon
+    .replace(/<a id="logo_home_link" href="[^"]*"><img [^>]*><\/a>/g,
+      '<a id="logo_home_link" href="https://minecraft-hoc-offline.vercel.app" title="Inicio" style="display:flex;align-items:center;height:100%;padding:0 12px;text-decoration:none;"><svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" style="margin-top:12px;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></a>')
+    .replace(/href="\/\/code\.org"/g, 'href="https://minecraft-hoc-offline.vercel.app"')
+    .replace(/href="https:\/\/code\.org"/g, 'href="https://minecraft-hoc-offline.vercel.app"')
     // Inject our styles + scripts right before </title>
     .replace('</title>', `</title>\n${injection}`);
 }

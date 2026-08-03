@@ -401,7 +401,7 @@ function buildMenu() {
       </div>
       <div class="card-body">
         <div class="card-title">${g.name}</div>
-        <p class="card-desc"><span class="desc-age">(${g.age})</span> ${g.description}</p>
+        <p class="card-desc">${g.description}</p>
         <button class="play-btn" style="--b1:${a.btn1};--b2:${a.btn2}">
           <span>▶</span> JUGAR
         </button>

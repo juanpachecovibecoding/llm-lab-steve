@@ -92,6 +92,10 @@ function proxyToCodeOrg(req, res, reqPath) {
 
 // ── fixHtml: patch the game HTML for offline use ─────────────────────────────
 function fixHtml(html, game, level) {
+  const totalLevels = GAMES[game] ? GAMES[game].levels : 14;
+  const nextLevel = level < totalLevels ? level + 1 : null;
+  const nextLevelUrl = nextLevel ? `/play/${game}/${nextLevel}` : '/';
+
   // Styles + MutationObserver to hide the "Need help?" panel
   const injection = `
   <style>
@@ -212,32 +216,65 @@ function fixHtml(html, game, level) {
       });
     })();
 
-    /* ── OFFLINE API INTERCEPTOR ──────────────────────────────────────────
-       Redirects all XHR / fetch calls to studio.code.org so they hit
-       our local server instead. This is what makes the congratulations
-       dialog appear and allows the game to restart properly.
+    /* ── OFFLINE / VERCEL API INTERCEPTOR ──────────────────────────────────
+       Intercepts XHR / fetch milestone calls so congratulations dialog appears
+       both offline and when hosted on Vercel without a backend server.
     ──────────────────────────────────────────────────────────────────── */
     (function () {
-      var LOCAL = location.protocol + '//' + location.host;
-      var REMOTE = 'https://studio.code.org';
+      function getNextLevelUrl() {
+        var p = window.location.pathname.split('/');
+        var g = p[2] || '${game}';
+        var l = parseInt(p[3] || '${level}', 10);
+        return '/play/' + g + '/' + (l + 1);
+      }
+
+      function getMilestoneResponse() {
+        var nUrl = getNextLevelUrl();
+        return JSON.stringify({
+          redirect: nUrl,
+          next_level_url: nUrl,
+          new_level_completed: true,
+          puzzle_ratings_enabled: false,
+          share_url: null,
+          phone_share_url: null
+        });
+      }
 
       /* --- XMLHttpRequest patch --- */
       var _xhrOpen = XMLHttpRequest.prototype.open;
+      var _xhrSend = XMLHttpRequest.prototype.send;
       XMLHttpRequest.prototype.open = function (method, url) {
-        if (typeof url === 'string' && url.indexOf(REMOTE) === 0) {
-          url = LOCAL + url.slice(REMOTE.length);
+        this._url = (typeof url === 'string') ? url : '';
+        return _xhrOpen.apply(this, arguments);
+      };
+      XMLHttpRequest.prototype.send = function (body) {
+        if (this._url && this._url.indexOf('milestone') !== -1) {
+          var self = this;
+          var resp = getMilestoneResponse();
+          Object.defineProperty(self, 'status', { value: 200, writable: true });
+          Object.defineProperty(self, 'readyState', { value: 4, writable: true });
+          Object.defineProperty(self, 'responseText', { value: resp, writable: true });
+          Object.defineProperty(self, 'response', { value: resp, writable: true });
+          setTimeout(function () {
+            if (typeof self.onreadystatechange === 'function') self.onreadystatechange();
+            if (typeof self.onload === 'function') self.onload();
+          }, 10);
+          return;
         }
-        return _xhrOpen.apply(this, [method, url].concat(
-          Array.prototype.slice.call(arguments, 2)
-        ));
+        return _xhrSend.apply(this, arguments);
       };
 
       /* --- fetch patch --- */
       if (typeof window.fetch === 'function') {
         var _origFetch = window.fetch;
         window.fetch = function (resource, options) {
-          if (typeof resource === 'string' && resource.indexOf(REMOTE) === 0) {
-            resource = LOCAL + resource.slice(REMOTE.length);
+          var urlStr = (typeof resource === 'string') ? resource : (resource && resource.url) ? resource.url : '';
+          if (urlStr && urlStr.indexOf('milestone') !== -1) {
+            var resp = getMilestoneResponse();
+            return Promise.resolve(new Response(resp, {
+              status: 200,
+              headers: { 'Content-Type': 'application/json' }
+            }));
           }
           return _origFetch.call(this, resource, options);
         };
@@ -260,6 +297,8 @@ function fixHtml(html, game, level) {
       '<a id="logo_home_link" href="https://minecraft-hoc-offline.vercel.app" title="Inicio" style="display:flex;align-items:center;height:100%;padding:0 12px;text-decoration:none;"><svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff" style="margin-top:12px;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></a>')
     .replace(/href="\/\/code\.org"/g, 'href="https://minecraft-hoc-offline.vercel.app"')
     .replace(/href="https:\/\/code\.org"/g, 'href="https://minecraft-hoc-offline.vercel.app"')
+    // Update next level redirects in HTML
+    .replace(/\/courses\/[\w-]+\/units\/\d+\/lessons\/\d+\/levels\/(\d+)/g, '/play/' + game + '/$1')
     // Inject our styles + scripts right before </title>
     .replace('</title>', `</title>\n${injection}`);
 }
@@ -436,9 +475,19 @@ const server = http.createServer((req, res) => {
   if (req.method === 'POST' && reqPath.startsWith('/milestone/')) {
     console.log(`  ✓ milestone: ${reqPath}`);
     req.resume(); // drain body
+    const referer = req.headers.referer || '';
+    const match = referer.match(/\/play\/([\w-]+)\/(\d+)/);
+    let nextUrl = '/';
+    if (match) {
+      const [, g, l] = match;
+      const curLvl = parseInt(l, 10);
+      const total = GAMES[g] ? GAMES[g].levels : 14;
+      nextUrl = curLvl < total ? `/play/${g}/${curLvl + 1}` : '/';
+    }
     return jsonOk({
-      redirect: null,
-      new_level_completed: null,
+      redirect: nextUrl,
+      next_level_url: nextUrl,
+      new_level_completed: true,
       puzzle_ratings_enabled: false,
       share_url: null,
       phone_share_url: null,

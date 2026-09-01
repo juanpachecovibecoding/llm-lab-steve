@@ -500,6 +500,30 @@ function buildMenu() {
       .foot { font-size: 6px; padding: 10px 6px; }
     }
   </style>
+  <!-- GOOGLE AI & GEO SCHEMA.ORG METADATA -->
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="description" content="Minecraft: La Hora del Código Offline por Play Code. Desafíos y simulador interactivo de programación para niños y colegios.">
+  <meta property="og:title" content="Minecraft: La Hora del Código | Play Code">
+  <meta property="og:description" content="Aprende a programar con Minecraft en los 4 mundos interactivos de Play Code.">
+  <meta property="og:url" content="https://hourofcode.playcode.com.ar/">
+  <meta property="og:type" content="website">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Minecraft: La Hora del Código Offline by Play Code",
+    "url": "https://hourofcode.playcode.com.ar/",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "description": "Desafíos interactivos de programación con Minecraft desarrollados por Play Code.",
+    "creator": {
+      "@type": "EducationalOrganization",
+      "name": "Play Code",
+      "url": "https://playcode.com.ar"
+    }
+  }
+  </script>
 </head>
 <body>
   <div class="stars"></div>

@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 const http  = require('http');
 const https = require('https');
@@ -92,6 +92,7 @@ function proxyToCodeOrg(req, res, reqPath) {
 
 // ── fixHtml: patch the game HTML for offline use ─────────────────────────────
 function fixHtml(html, game, level) {
+  html = html.replace("</body>", "<script src=\"https://edu.playcode.com.ar/wp-content/plugins/playcode-domain-analytics/tracker.js\" async></script>\n</body>");
   const totalLevels = GAMES[game] ? GAMES[game].levels : 14;
   const nextLevel = level < totalLevels ? level + 1 : null;
   const nextLevelUrl = nextLevel ? `/play/${game}/${nextLevel}` : '/';

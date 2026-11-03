@@ -1052,6 +1052,11 @@ const server = http.createServer((req, res) => {
     }
   }
 
+  // Intercept instruction avatar characters to serve the animated AI bot GIF
+  if (reqPath.includes('Pop_Up_Character')) {
+    if (serveFile(res, path.join(SITE_DIR, 'images', 'al.gif'))) return;
+  }
+
   // Serve locally-cached static assets
   if (serveFile(res, path.join(SITE_DIR, reqPath))) return;
   if (serveFile(res, path.join(SITE_DIR, reqPath, 'index.html'))) return;

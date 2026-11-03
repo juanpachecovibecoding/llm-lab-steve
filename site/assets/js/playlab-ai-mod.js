@@ -974,14 +974,19 @@
       }
     }
 
-    // 2. Replace Steve/Alex instruction avatar with clean friendly AI bot icon
-    var avatarSvg = getFriendlyAvatarSvg(gameId);
+    // 2. Replace Steve/Alex instruction avatar with animated AI Bot GIF
+    var avatarGif = '/images/al.gif';
     var avatars = document.querySelectorAll('img[src*="Pop_Up_Character"], .prompt-icon, #prompt-icon');
     avatars.forEach(function (img) {
-      if (img.tagName === 'IMG' && img.src !== avatarSvg) {
-        img.src = avatarSvg;
-        img.style.borderRadius = '12px';
-        img.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.10)';
+      if (img.tagName === 'IMG' && (!img.src || img.src.indexOf('al.gif') === -1)) {
+        img.src = avatarGif;
+        img.style.width = '64px';
+        img.style.maxWidth = '64px';
+        img.style.height = 'auto';
+        img.style.paddingTop = '12px';
+        img.style.borderRadius = '6px';
+        img.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.45)';
+        img.style.backgroundColor = 'transparent';
       }
     });
 

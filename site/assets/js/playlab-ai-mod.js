@@ -69,8 +69,8 @@
     },
     7: {
       title: 'Misión 07 // Carga de Datasets Neuronales',
-      short: 'Un modelo de IA requiere datos limpios y estructurados. Usa `cargar dataset` en todos los sockets a ambos lados del **canal de refrigeración líquida**.',
-      long: 'Un buen modelo de IA requiere planificación de datos. Ejecuta `cargar dataset` en cada puerto de entrenamiento a ambos lados del **canal de refrigeración líquida** para entrenar la red.',
+      short: 'Usa el comando `cargar dataset` en cada socket oscuro a ambos lados del **canal de refrigeración líquida**.',
+      long: 'Usa el comando `cargar dataset` en cada socket oscuro a ambos lados del **canal de refrigeración líquida** para sincronizar la memoria del cluster.',
       hints: [
         'Usa un bucle `repetir 6 veces` con `cargar dataset` y `avanzar` para completar la primera fila, luego cruza al otro lado.'
       ]

@@ -255,12 +255,22 @@ body.minecraft button#resetButton:not(.no-mc),
 
 .csf-top-instructions p,
 .instructions-markdown p,
-.instructions-markdown {
+.instructions-markdown,
+.instructions-markdown span,
+.instructions-markdown div,
+[class*="TopInstructions"] p,
+[class*="TopInstructions"] span,
+.ZHdTN_cB0vf0MqcS_LYw,
+.ZHdTN_cB0vf0MqcS_LYw p,
+.ZHdTN_cB0vf0MqcS_LYw span,
+.csDpEpx2BFCIjf8AXtMS,
+.csDpEpx2BFCIjf8AXtMS p,
+.csDpEpx2BFCIjf8AXtMS span {
   font-family: var(--pl-font) !important;
   font-size: 16px !important;
   font-weight: 500 !important;
   line-height: 1.55 !important;
-  color: var(--pl-text) !important;
+  color: #ffffff !important;
 }
 
 /* Inline code blocks inside mission instructions */

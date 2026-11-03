@@ -9,3 +9,4 @@ assets-download/
 .DS_Store
 Thumbs.db
 *.log
+*.bak

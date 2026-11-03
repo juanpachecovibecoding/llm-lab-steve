@@ -1,0 +1,210 @@
+/*
+   Font Awesome S3 Bucket URLs
+   Current version: 6.6.0
+   If you are changing the location of these files,
+   see the readme in this directory for more detail on manual steps to take when uploading new files.
+ */
+#pageheader-wrapper {
+  z-index: 99; }
+
+#hamburger {
+  display: inline-block;
+  position: relative; }
+  #hamburger.hide-always {
+    display: none; }
+  #hamburger.show-mobile {
+    display: none; }
+  #hamburger.hide-mobile {
+    display: block; }
+  #hamburger.show-always {
+    display: block; }
+  #hamburger .hide-always {
+    display: none; }
+  #hamburger .show-mobile {
+    display: none !important; }
+  #hamburger .hide-mobile {
+    display: block; }
+  #hamburger .show-always {
+    display: block; }
+  #hamburger.show-small-desktop,
+  #hamburger .show-small-desktop {
+    display: none; }
+  #hamburger #hamburger-icon {
+    cursor: pointer;
+    height: 20px;
+    vertical-align: middle;
+    text-decoration: none; }
+  #hamburger #hamburger-contents {
+    font-size: 1rem;
+    list-style: none;
+    margin: 0;
+    position: absolute;
+    top: 54px;
+    inset-inline-end: 0;
+    min-width: 228px;
+    max-width: 300px;
+    background: var(--background-neutral-primary);
+    border: 1px solid var(--borders-neutral-primary);
+    border-radius: 0.25rem;
+    padding: 0.375rem;
+    box-shadow: 0 4px 6px -1px var(--neutral-black-alpha-10), 0 2px 4px -1px var(--neutral-black-alpha-5);
+    z-index: 1022; }
+    #hamburger #hamburger-contents .item {
+      box-sizing: border-box;
+      width: 100%;
+      line-height: 1.5;
+      text-indent: 0;
+      list-style-type: none;
+      padding: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      overflow: hidden;
+      transition: background 0.2s ease-in-out; }
+      #hamburger #hamburger-contents .item:hover {
+        background: var(--background-neutral-tertiary);
+        border-radius: 4px; }
+      #hamburger #hamburger-contents .item:last-of-type {
+        border-bottom: none; }
+      #hamburger #hamburger-contents .item::before {
+        content: none; }
+      #hamburger #hamburger-contents .item a {
+        font-family: "Geist", "Noto Sans", "Noto Sans Arabic", "Noto Sans Armenian", "Noto Sans Bengali", "Noto Sans SC", "Noto Sans TC", "Noto Sans Devanagari", "Noto Sans Georgian", "Noto Sans Hebrew", "Noto Sans JP", "Noto Sans Kannada", "Noto Sans Khmer", "Noto Sans KR", "Noto Sans Myanmar", "Noto Sans Sinhala", "Noto Sans Tamil", "Noto Sans Telugu", "Noto Sans Thai", "Noto Sans Thaana", "Noto Sans Math", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        color: var(--text-neutral-primary);
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-decoration: none;
+        width: 100%; }
+        #hamburger #hamburger-contents .item a html[dir=rtl], .rtl #hamburger #hamburger-contents .item a {
+          float: right; }
+    #hamburger #hamburger-contents.hide-responsive-menu {
+      display: none; }
+    #hamburger #hamburger-contents .hide-about {
+      display: none; }
+    #hamburger #hamburger-contents .hide-educate {
+      display: none; }
+    #hamburger #hamburger-contents .hamburger-expandable-item {
+      cursor: pointer; }
+      #hamburger #hamburger-contents .hamburger-expandable-item .text {
+        font-size: 0.875rem;
+        font-weight: 500;
+        float: left;
+        max-width: 210px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        color: var(--text-neutral-primary); }
+        #hamburger #hamburger-contents .hamburger-expandable-item .text html[dir=rtl], .rtl #hamburger #hamburger-contents .hamburger-expandable-item .text {
+          float: right; }
+      #hamburger #hamburger-contents .hamburger-expandable-item .arrow-down, #hamburger #hamburger-contents .hamburger-expandable-item .arrow-up {
+        font-size: 0.875rem;
+        color: var(--text-neutral-primary); }
+        #hamburger #hamburger-contents .hamburger-expandable-item .arrow-down html[dir=rtl], .rtl #hamburger #hamburger-contents .hamburger-expandable-item .arrow-down,
+        #hamburger #hamburger-contents .hamburger-expandable-item .arrow-up html[dir=rtl],
+        .rtl #hamburger #hamburger-contents .hamburger-expandable-item .arrow-up {
+          float: left; }
+      #hamburger #hamburger-contents .hamburger-expandable-item .arrow-up {
+        display: none; }
+      #hamburger #hamburger-contents .hamburger-expandable-item i {
+        width: unset; }
+    #hamburger #hamburger-contents .hamburger-expandable-items {
+      margin-left: 20px;
+      display: none; }
+      #hamburger #hamburger-contents .hamburger-expandable-items .item {
+        max-width: 220px;
+        margin-top: 0px; }
+    #hamburger #hamburger-contents .divider {
+      height: 1px;
+      background: var(--borders-neutral-primary);
+      margin: 0.5rem 0; }
+      @media (min-width: 1269px) {
+        #hamburger #hamburger-contents .divider.hide-large-desktop {
+          display: none !important; } }
+  @media (max-width: 1268px) {
+    #hamburger.show-small-desktop,
+    #hamburger .show-small-desktop {
+      display: flex !important; } }
+  @media (max-width: 1023px) {
+    #hamburger.show-mobile,
+    #hamburger .show-mobile {
+      display: flex !important; }
+    #hamburger .show-mobile.item {
+      display: flex !important; }
+    #hamburger.hide-mobile,
+    #hamburger .hide-mobile {
+      display: none; }
+    #hamburger #hamburger {
+      padding-left: 0; } }
+
+#hamburger:not(.user-is-tabbing) {
+  outline: none; }
+#hamburger #hamburger-icon {
+  padding: 10px 28px 16px 0;
+  float: right;
+  margin-top: 7px;
+  margin-inline-start: 3px;
+  display: inline-block; }
+  #hamburger #hamburger-icon span, #hamburger #hamburger-icon span::before, #hamburger #hamburger-icon span::after {
+    cursor: pointer;
+    height: 3px;
+    width: 25px;
+    border-radius: 2px;
+    background: var(--background-neutral-white-fixed);
+    position: absolute;
+    display: block;
+    content: '';
+    margin-top: 2px;
+    margin-bottom: 2px; }
+  #hamburger #hamburger-icon span {
+    transition: all 500ms ease-in-out; }
+    html[dir=rtl] #hamburger #hamburger-icon span {
+      margin-right: -25px; }
+      html[dir=rtl] #hamburger #hamburger-icon span::before {
+        margin-right: 0; }
+      html[dir=rtl] #hamburger #hamburger-icon span::after {
+        margin-right: 0; }
+    #hamburger #hamburger-icon span::before {
+      transition: all 500ms ease-in-out;
+      top: -10px; }
+    #hamburger #hamburger-icon span::after {
+      transition: all 500ms ease-in-out;
+      bottom: -10px; }
+  #hamburger #hamburger-icon.active span {
+    background-color: transparent; }
+    #hamburger #hamburger-icon.active span::before {
+      top: -2px;
+      transform: rotate(45deg); }
+    #hamburger #hamburger-icon.active span::after {
+      top: -2px;
+      transform: rotate(-45deg); }
+
+#hamburger-sign-up-buttons {
+  /* Hide the Sign in and Create account buttons
+  in the hamburger on large screens */ }
+  #hamburger-sign-up-buttons .button-wrapper {
+    box-sizing: border-box;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; }
+    #hamburger-sign-up-buttons .button-wrapper .header_button {
+      margin: unset;
+      width: 100%;
+      justify-content: center;
+      height: unset;
+      white-space: unset; }
+    #hamburger-sign-up-buttons .button-wrapper .button-signin, #hamburger-sign-up-buttons .button-wrapper #header_user_signin {
+      color: var(--text-neutral-primary);
+      border-color: var(--borders-neutral-solid); }
+    #hamburger-sign-up-buttons .button-wrapper .button-create-account, #hamburger-sign-up-buttons .button-wrapper #header_user_create_account {
+      background-color: var(--background-brand-purple-primary) !important;
+      color: var(--text-neutral-white-fixed);
+      border-color: var(--borders-brand-purple-primary);
+      border-radius: 4px; }
+  @media (min-width: 426px) {
+    #hamburger-sign-up-buttons {
+      display: none; } }
+
+/*# sourceMappingURL=hamburger.css.map */

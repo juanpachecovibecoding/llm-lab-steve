@@ -974,17 +974,17 @@
       }
     }
 
-    // 2. Hide "Menos" button and enlarge animated monitor avatar by 100%
+    // 2. Hide "Menos" button and enlarge animated monitor avatar (+50% to 165px)
     if (!document.getElementById('playlab-avatar-style')) {
       var customStyle = document.createElement('style');
       customStyle.id = 'playlab-avatar-style';
       customStyle.textContent = [
         '#toggleButton { display: none !important; }',
-        'div[style*="padding-left: 90px"], div[style*="padding-left:90px"] { padding-left: 125px !important; padding-right: 20px !important; }',
-        'div[style*="position: absolute"][style*="width: 90px"], div[style*="position:absolute"][style*="width:90px"] { width: 110px !important; }',
-        '.prompt-icon-cell { width: 110px !important; max-width: 110px !important; vertical-align: middle !important; padding-right: 12px !important; }',
-        '#prompt-icon, .prompt-icon { width: 110px !important; max-width: 110px !important; height: auto !important; padding-top: 6px !important; border-radius: 8px !important; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45) !important; background-color: transparent !important; }',
-        '#lightbulb { top: 2px !important; right: 6px !important; }'
+        'div[style*="padding-left: 90px"], div[style*="padding-left:90px"], div[style*="padding-left: 125px"], div[style*="padding-left:125px"] { padding-left: 185px !important; padding-right: 20px !important; min-height: 120px !important; display: flex !important; align-items: center !important; box-sizing: border-box !important; }',
+        'div[style*="position: absolute"][style*="width: 90px"], div[style*="position:absolute"][style*="width:90px"], div[style*="position: absolute"][style*="width: 110px"], div[style*="position:absolute"][style*="width:110px"] { width: 165px !important; bottom: auto !important; top: 50% !important; transform: translateY(-50%) !important; }',
+        '.prompt-icon-cell { width: 165px !important; max-width: 165px !important; vertical-align: middle !important; padding-right: 14px !important; }',
+        '#prompt-icon, .prompt-icon { width: 165px !important; max-width: 165px !important; height: auto !important; padding-top: 4px !important; border-radius: 10px !important; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45) !important; background-color: transparent !important; }',
+        '#lightbulb { top: 2px !important; right: 8px !important; }'
       ].join('\n');
       document.head.appendChild(customStyle);
     }
@@ -994,12 +994,12 @@
     avatars.forEach(function (img) {
       if (img.tagName === 'IMG' && (!img.src || img.src.indexOf('al.gif') === -1)) {
         img.src = avatarGif;
-        img.style.width = '110px';
-        img.style.maxWidth = '110px';
+        img.style.width = '165px';
+        img.style.maxWidth = '165px';
         img.style.height = 'auto';
-        img.style.paddingTop = '6px';
-        img.style.borderRadius = '8px';
-        img.style.boxShadow = '0 4px 14px rgba(0, 0, 0, 0.45)';
+        img.style.paddingTop = '4px';
+        img.style.borderRadius = '10px';
+        img.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.45)';
         img.style.backgroundColor = 'transparent';
       }
     });

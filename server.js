@@ -1053,8 +1053,13 @@ const server = http.createServer((req, res) => {
   }
 
   // Intercept instruction avatar characters to serve the animated AI bot GIF
-  if (reqPath.includes('Pop_Up_Character')) {
-    if (serveFile(res, path.join(SITE_DIR, 'images', 'al.gif'))) return;
+  if (reqPath.includes('Pop_Up_Character') || reqPath.includes('Agent_Neutral')) {
+    const referer = req.headers.referer || '';
+    let gifFile = 'al.gif';
+    if (referer.includes('/minecraft/')) gifFile = 'am.gif';
+    else if (referer.includes('/hero/')) gifFile = 'pch.gif';
+    else if (referer.includes('/aquatic/')) gifFile = 'lg.gif';
+    if (serveFile(res, path.join(SITE_DIR, 'images', gifFile))) return;
   }
 
   // Serve locally-cached static assets

@@ -939,6 +939,13 @@
     aquatic: 'Centro de Datos Submarino de HiCloud, China'
   };
 
+  var THEME_AVATARS = {
+    mc: '/images/al.gif',        // Sam Altman (OpenAI Core)
+    minecraft: '/images/am.gif', // Dario Amodei (Anthropic Lab)
+    hero: '/images/pch.gif',     // Sundar Pichai (DeepMind Robotics)
+    aquatic: '/images/lg.gif'    // Liang Wenfeng (HiCloud Submarino)
+  };
+
   function getFriendlyAvatarSvg(gameId) {
     var color = THEME_COLORS[gameId] || '#10a37f';
     var enc = encodeURIComponent(color);
@@ -989,10 +996,10 @@
       document.head.appendChild(customStyle);
     }
 
-    var avatarGif = '/images/al.gif';
-    var avatars = document.querySelectorAll('img[src*="Pop_Up_Character"], .prompt-icon, #prompt-icon');
+    var avatarGif = THEME_AVATARS[gameId] || '/images/al.gif';
+    var avatars = document.querySelectorAll('img[src*="Pop_Up_Character"], img[src*="Agent_Neutral"], .prompt-icon, #prompt-icon');
     avatars.forEach(function (img) {
-      if (img.tagName === 'IMG' && (!img.src || img.src.indexOf('al.gif') === -1)) {
+      if (img.tagName === 'IMG' && (!img.src || img.src.indexOf(avatarGif) === -1)) {
         img.src = avatarGif;
         img.style.width = '165px';
         img.style.maxWidth = '165px';

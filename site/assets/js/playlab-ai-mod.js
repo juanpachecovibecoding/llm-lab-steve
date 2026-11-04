@@ -146,6 +146,35 @@
   // ── 2. PATCH APP OPTIONS (MISSION INSTRUCTIONS & HINTS) ────────────────────
   function patchLevelOptions(opts) {
     if (!opts || !opts.level) return opts;
+    var gameId = getCurrentGameId();
+    if (gameId !== 'mc') {
+      // For non-MC labs (e.g. Anthropic Lab), clean up any legacy chicken/animal terms
+      if (typeof opts.level.shortInstructions === 'string') {
+        opts.level.shortInstructions = opts.level.shortInstructions
+          .replace(/la gallina/gi, 'el robot de orugas')
+          .replace(/las gallinas/gi, 'los robots de orugas')
+          .replace(/gallinas/gi, 'robots de orugas')
+          .replace(/gallina/gi, 'robot de orugas')
+          .replace(/los pollos/gi, 'los robots de orugas')
+          .replace(/al pollo/gi, 'al robot de orugas')
+          .replace(/el pollo/gi, 'el robot de orugas')
+          .replace(/pollos/gi, 'robots de orugas')
+          .replace(/pollo/gi, 'robot de orugas');
+      }
+      if (typeof opts.level.longInstructions === 'string') {
+        opts.level.longInstructions = opts.level.longInstructions
+          .replace(/la gallina/gi, 'el robot de orugas')
+          .replace(/las gallinas/gi, 'los robots de orugas')
+          .replace(/gallinas/gi, 'robots de orugas')
+          .replace(/gallina/gi, 'robot de orugas')
+          .replace(/los pollos/gi, 'los robots de orugas')
+          .replace(/al pollo/gi, 'al robot de orugas')
+          .replace(/el pollo/gi, 'el robot de orugas')
+          .replace(/pollos/gi, 'robots de orugas')
+          .replace(/pollo/gi, 'robot de orugas');
+      }
+      return opts;
+    }
     var lvl = getCurrentLevelNum();
     var m = MISSIONS_MC[lvl];
     if (m) {
@@ -237,7 +266,7 @@
         // Entities & Events
         entityTypeSheep: 'bot de datos',
         entityTypeCreeper: 'bot de malware',
-        entityTypeChicken: 'dron auxiliar',
+        entityTypeChicken: 'robot de orugas',
         entityTypeCow: 'nodo de almacenamiento',
         entityTypeIronGolem: 'guardián de seguridad',
         entityTypePlayer: 'ingeniero de IA',
@@ -249,6 +278,10 @@
         eventTypeWhenAttacked: 'al detectar intrusión',
         eventTypeWhenDay: 'en ciclo diurno',
         eventTypeWhenNight: 'en ciclo nocturno',
+
+        // Robotic SFX
+        soundTypeChickenBawk: 'servo de brazo robótico',
+        soundTypeChickenHurt: 'alerta de sobrecarga',
 
         // Mini-blocks (inventory / floating items)
         miniBlockCobblestone: 'placa térmica',

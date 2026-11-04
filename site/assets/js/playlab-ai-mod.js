@@ -1011,9 +1011,14 @@
         '.blocklyFlyoutBackground { fill: #1e2530 !important; fill-opacity: 0.98 !important; }',
         '.blocklyMainBackground { fill: #0d1117 !important; }',
         '#headers { border-bottom: 2px solid #2d3748 !important; background-color: #1e2530 !important; }',
-        '.blocklyWidgetDiv .goog-menu, .blocklyDropDownDiv { background-color: #1e293b !important; border: 2px solid #0f172a !important; border-radius: 0px !important; box-shadow: 4px 4px 0px #000 !important; font-family: "Pixelify Sans Local", monospace !important; font-size: 12px !important; }',
-        '.goog-menuitem { color: #f1f5f9 !important; font-family: "Pixelify Sans Local", monospace !important; }',
-        '.goog-menuitem-highlight { background-color: #3b82f6 !important; color: #ffffff !important; }'
+        /* Dropdown options popup menu: clean white text, retro dark background & hover */
+        '.blocklyDropDownDiv, .blocklyDropDownContent, .blocklyMenu, .blocklyMenuItem, .blocklyMenuItemContent, .goog-menu, .goog-menuitem, .goog-menuitem-content { color: #ffffff !important; font-family: "Pixelify Sans Local", monospace !important; font-size: 13px !important; font-weight: 700 !important; }',
+        '.blocklyDropDownDiv { background-color: #1e293b !important; border: 2px solid #090d16 !important; border-radius: 0px !important; box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.6) !important; }',
+        '.blocklyDropDownArrow { border-bottom-color: #1e293b !important; border-top-color: #1e293b !important; }',
+        '.blocklyMenuItem { color: #ffffff !important; padding: 6px 14px !important; cursor: pointer !important; transition: background-color 0.15s ease !important; }',
+        '.blocklyMenuItemContent { color: #ffffff !important; text-shadow: 1px 1px 0px #000000 !important; }',
+        '.blocklyMenuItemHighlight, .blocklyMenuItem:hover, .goog-menuitem-highlight, .goog-menuitem:hover { background-color: #2563eb !important; color: #ffffff !important; }',
+        '.blocklyMenuItemSelected { background-color: rgba(37, 99, 235, 0.45) !important; color: #ffffff !important; }'
       ].join('\n');
       document.head.appendChild(customStyle);
     }

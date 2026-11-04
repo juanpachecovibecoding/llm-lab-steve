@@ -1020,10 +1020,10 @@
       customStyle.id = 'playlab-avatar-style';
       customStyle.textContent = [
         '#toggleButton { display: none !important; }',
-        'div[style*="padding-left: 90px"], div[style*="padding-left:90px"], div[style*="padding-left: 125px"], div[style*="padding-left:125px"] { padding-left: 185px !important; padding-right: 20px !important; min-height: 120px !important; display: flex !important; align-items: center !important; box-sizing: border-box !important; }',
-        'div[style*="position: absolute"][style*="width: 90px"], div[style*="position:absolute"][style*="width:90px"], div[style*="position: absolute"][style*="width: 110px"], div[style*="position:absolute"][style*="width:110px"] { width: 165px !important; bottom: auto !important; top: 50% !important; transform: translateY(-50%) !important; }',
+        'div[style*="padding-left: 50px"], div[style*="padding-left:50px"], div[style*="padding-left: 60px"], div[style*="padding-left:60px"], div[style*="padding-left: 70px"], div[style*="padding-left:70px"], div[style*="padding-left: 80px"], div[style*="padding-left:80px"], div[style*="padding-left: 90px"], div[style*="padding-left:90px"], div[style*="padding-left: 100px"], div[style*="padding-left:100px"], div[style*="padding-left: 110px"], div[style*="padding-left:110px"], div[style*="padding-left: 120px"], div[style*="padding-left:120px"], div[style*="padding-left: 125px"], div[style*="padding-left:125px"], div[style*="padding-left: 130px"], div[style*="padding-left:130px"] { padding-left: 195px !important; padding-right: 20px !important; min-height: 120px !important; display: flex !important; align-items: center !important; box-sizing: border-box !important; }',
+        'div[style*="position: absolute"][style*="width: 50px"], div[style*="position:absolute"][style*="width:50px"], div[style*="position: absolute"][style*="width: 60px"], div[style*="position:absolute"][style*="width:60px"], div[style*="position: absolute"][style*="width: 70px"], div[style*="position:absolute"][style*="width:70px"], div[style*="position: absolute"][style*="width: 80px"], div[style*="position:absolute"][style*="width:80px"], div[style*="position: absolute"][style*="width: 90px"], div[style*="position:absolute"][style*="width:90px"], div[style*="position: absolute"][style*="width: 100px"], div[style*="position:absolute"][style*="width:100px"], div[style*="position: absolute"][style*="width: 110px"], div[style*="position:absolute"][style*="width:110px"], div[style*="position: absolute"][style*="width: 120px"], div[style*="position:absolute"][style*="width:120px"], div[style*="position: absolute"][style*="width: 125px"], div[style*="position:absolute"][style*="width:125px"] { width: 165px !important; max-width: 165px !important; right: auto !important; left: 5px !important; bottom: auto !important; top: 50% !important; transform: translateY(-50%) !important; }',
         '.prompt-icon-cell { width: 165px !important; max-width: 165px !important; vertical-align: middle !important; padding-right: 14px !important; }',
-        '#prompt-icon, .prompt-icon { width: 165px !important; max-width: 165px !important; height: auto !important; padding-top: 4px !important; border-radius: 10px !important; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45) !important; background-color: transparent !important; }',
+        '#prompt-icon, .prompt-icon, img[src*="am.gif"], img[src*="am.png"], img[src*="pch"], img[src*="lg"], img[src*="al.gif"] { width: 165px !important; max-width: 165px !important; height: auto !important; padding-top: 4px !important; border-radius: 10px !important; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45) !important; background-color: transparent !important; }',
         '#lightbulb { top: 2px !important; right: 8px !important; }',
         '#x-close, .x-close, button[aria-label="Cerrar"], button[aria-label="Close"] { display: inline-flex !important; align-items: center !important; justify-content: center !important; width: 32px !important; height: 32px !important; min-width: 32px !important; min-height: 32px !important; border-radius: 50% !important; border: 1px solid #cbd5e1 !important; background-color: #ffffff !important; color: #475569 !important; cursor: pointer !important; padding: 0 !important; box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important; position: absolute !important; top: 14px !important; right: 14px !important; inset-inline-end: 14px !important; transition: all 0.15s ease-in-out !important; z-index: 100 !important; }',
         '#x-close:hover, .x-close:hover, button[aria-label="Cerrar"]:hover, button[aria-label="Close"]:hover { background-color: #f1f5f9 !important; color: #0f172a !important; border-color: #94a3b8 !important; transform: scale(1.08) !important; }',
@@ -1061,13 +1061,35 @@
     avatars.forEach(function (img) {
       if (img.tagName === 'IMG' && (!img.src || img.src.indexOf(avatarGif) === -1)) {
         img.src = avatarGif;
-        img.style.width = '165px';
-        img.style.maxWidth = '165px';
-        img.style.height = 'auto';
-        img.style.paddingTop = '4px';
-        img.style.borderRadius = '10px';
-        img.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.45)';
-        img.style.backgroundColor = 'transparent';
+      }
+      img.style.width = '165px';
+      img.style.maxWidth = '165px';
+      img.style.height = 'auto';
+      img.style.paddingTop = '4px';
+      img.style.borderRadius = '10px';
+      img.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.45)';
+      img.style.backgroundColor = 'transparent';
+
+      // Traverse ancestors to prevent text overlapping across all labs (Anthropic, Aquatic, etc.)
+      var p = img.parentElement;
+      while (p && p !== document.body) {
+        if (p.style) {
+          if (p.style.paddingLeft && parseInt(p.style.paddingLeft, 10) < 195 && parseInt(p.style.paddingLeft, 10) > 0) {
+            p.style.setProperty('padding-left', '195px', 'important');
+            p.style.setProperty('min-height', '120px', 'important');
+            p.style.setProperty('box-sizing', 'border-box', 'important');
+          }
+          if (p.style.position === 'absolute' && p.style.width && parseInt(p.style.width, 10) < 165 && parseInt(p.style.width, 10) > 0) {
+            p.style.setProperty('width', '165px', 'important');
+            p.style.setProperty('max-width', '165px', 'important');
+            p.style.setProperty('right', 'auto', 'important');
+            p.style.setProperty('left', '5px', 'important');
+            p.style.setProperty('top', '50%', 'important');
+            p.style.setProperty('bottom', 'auto', 'important');
+            p.style.setProperty('transform', 'translateY(-50%)', 'important');
+          }
+        }
+        p = p.parentElement;
       }
     });
 

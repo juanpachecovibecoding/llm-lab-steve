@@ -1185,8 +1185,60 @@
       oldBar.parentNode.removeChild(oldBar);
     }
 
+    // Enhance Splitter with Retro Pixel Art Handle & Drag States
+    enhanceSplitter();
+
     // Initialize Retro CRT Terminal Loader on #minecraft-frame
     initRetroTerminalLoader();
+  }
+
+  // ── RETRO PIXEL ART SPLITTER ENHANCER ─────────────────────────────────────
+  function enhanceSplitter() {
+    var bar = document.getElementById('visualizationResizeBar');
+    if (!bar) return;
+
+    if (!bar.querySelector('.playlab-splitter-handle')) {
+      var handle = document.createElement('div');
+      handle.className = 'playlab-splitter-handle';
+      handle.setAttribute('role', 'separator');
+      handle.setAttribute('aria-label', 'Arrastra para cambiar el tamaño del visor');
+      handle.innerHTML =
+        '<span class="splitter-arrow left-arrow">◀</span>' +
+        '<div class="splitter-grip">' +
+          '<span class="grip-line"></span>' +
+          '<span class="grip-line"></span>' +
+          '<span class="grip-line"></span>' +
+          '<span class="grip-line"></span>' +
+        '</div>' +
+        '<span class="splitter-arrow right-arrow">▶</span>' +
+        '<div class="playlab-splitter-tooltip">[ ◀ ARRASTRA PARA AGRANDAR ▶ ]</div>';
+
+      bar.appendChild(handle);
+
+      // Trigger discovery nudge 2.5s after mount
+      setTimeout(function () {
+        handle.classList.add('nudge-hint');
+        setTimeout(function () {
+          handle.classList.remove('nudge-hint');
+        }, 2300);
+      }, 2500);
+    }
+
+    if (!bar._dragHooked) {
+      bar._dragHooked = true;
+      var onStart = function () {
+        document.body.classList.add('resizing-visualization');
+        bar.classList.add('active-drag');
+      };
+      var onEnd = function () {
+        document.body.classList.remove('resizing-visualization');
+        bar.classList.remove('active-drag');
+      };
+      bar.addEventListener('mousedown', onStart);
+      bar.addEventListener('touchstart', onStart, { passive: true });
+      window.addEventListener('mouseup', onEnd);
+      window.addEventListener('touchend', onEnd);
+    }
   }
 
   // ── RETRO CRT TERMINAL LOADING SCREEN ─────────────────────────────────────

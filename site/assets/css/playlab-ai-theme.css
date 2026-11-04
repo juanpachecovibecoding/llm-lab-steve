@@ -726,8 +726,217 @@ body.minecraft button#resetButton:not(.no-mc) {
 }
 
 /* ============================================================================
-   RETRO CRT TERMINAL LOADING SCREEN FOR GAME VIEWPORT
+   RETRO PIXEL ART SPLITTER (DIVISOR) & COL-RESIZE CURSOR
    ============================================================================ */
+
+/* 1. Custom Pixel Art Resize Cursors */
+#visualizationResizeBar,
+#visualizationResizeBar * {
+  cursor: url('/images/retro_col_resize.png') 16 16, col-resize !important;
+}
+
+body.resizing-visualization,
+body.resizing-visualization *,
+body.resizing-visualization #visualizationResizeBar,
+body.resizing-visualization #visualizationResizeBar * {
+  cursor: url('/images/retro_col_resize_active.png') 16 16, col-resize !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+/* 2. Splitter Track Bar */
+#visualizationResizeBar {
+  width: 18px !important;
+  margin-left: -2px !important;
+  line-height: normal !important;
+  background: linear-gradient(90deg, #18181b 0%, #27272a 45%, #3f3f46 50%, #27272a 55%, #18181b 100%) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.6) !important;
+  z-index: 85 !important;
+  overflow: visible !important;
+  transition: background 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+/* Remove default FontAwesome 3 dots icon */
+#visualizationResizeBar::before,
+#visualizationResizeBar::after {
+  display: none !important;
+  content: "" !important;
+}
+
+#visualizationResizeBar:hover,
+#visualizationResizeBar.active-drag {
+  background: linear-gradient(90deg, #18181b 0%, #1e3a29 45%, #22c55e 50%, #1e3a29 55%, #18181b 100%) !important;
+  box-shadow: 0 0 10px rgba(34, 197, 94, 0.45) !important;
+}
+
+/* 3. Central Retro Pixel Art Grip Handle */
+.playlab-splitter-handle {
+  position: absolute !important;
+  top: 240px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 34px !important;
+  height: 64px !important;
+  line-height: normal !important;
+  background: #18181b !important;
+  border: 2px solid #3f3f46 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 0 0 1px #09090b, 0 4px 10px rgba(0, 0, 0, 0.7) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 4px !important;
+  box-sizing: border-box !important;
+  pointer-events: auto !important;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease !important;
+  user-select: none !important;
+}
+
+/* Arrow indicators inside handle */
+.playlab-splitter-handle .splitter-arrow {
+  font-family: 'Courier New', Courier, monospace !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  color: #39ff84 !important;
+  text-shadow: 0 0 6px #39ff84, 0 1px 2px #000 !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+  transition: transform 0.2s ease !important;
+}
+
+/* Grip ridged texture */
+.playlab-splitter-handle .splitter-grip {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 3px !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.playlab-splitter-handle .grip-line {
+  display: block !important;
+  width: 8px !important;
+  height: 2px !important;
+  background: #71717a !important;
+  box-shadow: 0 1px 0 #000, 0 -1px 0 #27272a !important;
+  border-radius: 1px !important;
+  transition: background 0.2s ease !important;
+}
+
+/* Hover effect on Handle */
+#visualizationResizeBar:hover .playlab-splitter-handle,
+.playlab-splitter-handle:hover,
+.playlab-splitter-handle.hover-test,
+#visualizationResizeBar.active-drag .playlab-splitter-handle {
+  border-color: #39ff84 !important;
+  box-shadow: 0 0 0 1px #09090b, 0 0 14px rgba(57, 255, 132, 0.75), inset 0 0 6px rgba(57, 255, 132, 0.3) !important;
+}
+
+#visualizationResizeBar:hover .playlab-splitter-handle .left-arrow,
+.playlab-splitter-handle:hover .left-arrow,
+.playlab-splitter-handle.hover-test .left-arrow {
+  transform: translateX(-2px) !important;
+  animation: playlabArrowPulseLeft 0.8s infinite alternate ease-in-out !important;
+}
+
+#visualizationResizeBar:hover .playlab-splitter-handle .right-arrow,
+.playlab-splitter-handle:hover .right-arrow,
+.playlab-splitter-handle.hover-test .right-arrow {
+  transform: translateX(2px) !important;
+  animation: playlabArrowPulseRight 0.8s infinite alternate ease-in-out !important;
+}
+
+#visualizationResizeBar:hover .playlab-splitter-handle .grip-line,
+.playlab-splitter-handle:hover .grip-line,
+.playlab-splitter-handle.hover-test .grip-line {
+  background: #39ff84 !important;
+  box-shadow: 0 0 4px #39ff84 !important;
+}
+
+@keyframes playlabArrowPulseLeft {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-3px); }
+}
+
+@keyframes playlabArrowPulseRight {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(3px); }
+}
+
+/* 4. Floating Retro Tooltip Hint */
+.playlab-splitter-tooltip {
+  position: absolute !important;
+  bottom: calc(100% + 8px) !important;
+  left: 50% !important;
+  transform: translateX(-50%) translateY(4px) !important;
+  background: #09090b !important;
+  border: 2px solid #39ff84 !important;
+  border-radius: 4px !important;
+  color: #39ff84 !important;
+  font-family: 'Courier New', Courier, monospace !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.5px !important;
+  line-height: 14px !important;
+  height: auto !important;
+  padding: 4px 8px !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.85), 0 0 8px rgba(57, 255, 132, 0.4) !important;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s !important;
+  z-index: 100 !important;
+}
+
+/* Little retro arrow indicator under tooltip */
+.playlab-splitter-tooltip::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 50% !important;
+  margin-left: -5px !important;
+  border-width: 5px 5px 0 5px !important;
+  border-style: solid !important;
+  border-color: #39ff84 transparent transparent transparent !important;
+}
+
+#visualizationResizeBar:hover .playlab-splitter-tooltip,
+.playlab-splitter-handle:hover .playlab-splitter-tooltip,
+.playlab-splitter-handle.hover-test .playlab-splitter-tooltip {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateX(-50%) translateY(0) !important;
+}
+
+/* 5. Discovery Nudge Animation on Level Mount */
+.playlab-splitter-handle.nudge-hint {
+  animation: playlabHandleNudge 2.2s ease-in-out !important;
+}
+
+@keyframes playlabHandleNudge {
+  0% {
+    border-color: #3f3f46;
+    box-shadow: 0 0 0 1px #09090b;
+  }
+  20%, 60% {
+    border-color: #39ff84;
+    box-shadow: 0 0 0 1px #09090b, 0 0 16px rgba(57, 255, 132, 0.9);
+    transform: translateX(-50%) scale(1.08);
+  }
+  40%, 80% {
+    border-color: #39ff84;
+    box-shadow: 0 0 0 1px #09090b, 0 0 8px rgba(57, 255, 132, 0.5);
+    transform: translateX(-50%) scale(1);
+  }
+  100% {
+    border-color: #3f3f46;
+    box-shadow: 0 0 0 1px #09090b, 0 4px 10px rgba(0, 0, 0, 0.7);
+    transform: translateX(-50%) scale(1);
+  }
+}
+
 
 #minecraft-frame {
   position: relative !important;

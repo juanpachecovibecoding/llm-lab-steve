@@ -1184,6 +1184,99 @@
     if (oldBar && oldBar.parentNode) {
       oldBar.parentNode.removeChild(oldBar);
     }
+
+    // Initialize Retro CRT Terminal Loader on #minecraft-frame
+    initRetroTerminalLoader();
+  }
+
+  // ── RETRO CRT TERMINAL LOADING SCREEN ─────────────────────────────────────
+  // Preload loading image asset early
+  try {
+    var _preloadCrt = new Image();
+    _preloadCrt.src = '/images/retro_terminal_loading_400.png';
+  } catch (e) {}
+
+  var _crtLoaderInitialized = false;
+
+  function initRetroTerminalLoader() {
+    if (_crtLoaderInitialized) return;
+    var frame = document.getElementById('minecraft-frame');
+    if (!frame) return;
+
+    // Check if already created
+    if (document.getElementById('playlab-crt-loader')) return;
+
+    _crtLoaderInitialized = true;
+    frame.classList.add('crt-loading-active');
+
+    var loader = document.createElement('div');
+    loader.id = 'playlab-crt-loader';
+    loader.className = 'playlab-crt-loader';
+    loader.setAttribute('role', 'status');
+    loader.setAttribute('aria-label', 'Cargando Laboratorio de IA...');
+    loader.innerHTML =
+      '<div class="playlab-crt-cursor"></div>' +
+      '<div class="playlab-crt-log-lines">' +
+        '<div class="playlab-crt-line line-1">&gt; INICIALIZANDO NODO CENTRAL...</div>' +
+        '<div class="playlab-crt-line line-2">&gt; CARGANDO MODELOS NEURALES... [OK]</div>' +
+        '<div class="playlab-crt-line line-3">&gt; CONECTANDO AL LABORATORIO... [OK]</div>' +
+        '<div class="playlab-crt-progress-bar">' +
+          '<span class="playlab-crt-prog-fill"></span>' +
+        '</div>' +
+        '<div class="playlab-crt-line line-4">&gt; ENTORNO LISTO. EJECUTANDO...</div>' +
+      '</div>' +
+      '<div class="playlab-crt-scan-beam"></div>' +
+      '<div class="playlab-crt-scanlines"></div>';
+
+    frame.appendChild(loader);
+
+    var startTime = Date.now();
+    var minDuration = 2200; // 2.2 seconds minimum to appreciate retro terminal animation
+    var dismissed = false;
+
+    function checkReady() {
+      if (dismissed) return;
+      var now = Date.now();
+      var elapsed = now - startTime;
+      var isPhaserReady = false;
+
+      try {
+        var pLoaded = false, lvlInit = false;
+        if (window.Craft) {
+          pLoaded = typeof window.Craft.phaserLoaded === 'function' ? window.Craft.phaserLoaded() : false;
+          lvlInit = typeof window.Craft.levelInitialized === 'function' ? !!window.Craft.levelInitialized() : false;
+        }
+        if (pLoaded && (lvlInit || (window.Craft && window.Craft.gameController && window.Craft.gameController.game && window.Craft.gameController.game.isBooted))) {
+          isPhaserReady = true;
+        }
+      } catch (e) {}
+
+      if ((isPhaserReady && elapsed >= minDuration) || elapsed >= 7000) {
+        dismissed = true;
+        loader.classList.add('crt-dismiss');
+        setTimeout(function () {
+          loader.classList.add('crt-hidden');
+          frame.classList.remove('crt-loading-active');
+        }, 440);
+        return;
+      }
+
+      setTimeout(checkReady, 80);
+    }
+
+    setTimeout(checkReady, 300);
+  }
+
+  // Observe DOM for immediate attachment as soon as React mounts #minecraft-frame
+  if (typeof MutationObserver !== 'undefined') {
+    var _frameObserver = new MutationObserver(function () {
+      if (!_crtLoaderInitialized && document.getElementById('minecraft-frame')) {
+        initRetroTerminalLoader();
+      }
+    });
+    try {
+      _frameObserver.observe(document.documentElement, { childList: true, subtree: true });
+    } catch (e) {}
   }
 
   // Expose lifecycle hooks (Note: #visualization world textures left untouched per user request)
@@ -1194,6 +1287,7 @@
       if (window.appOptions) {
         patchLevelOptions(window.appOptions);
       }
+      initRetroTerminalLoader();
     },
     enhanceDOM: enhanceDOM
   };
@@ -1201,6 +1295,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     applyThemeAttribute();
     patchLocales();
+    initRetroTerminalLoader();
     enhanceDOM();
     setInterval(enhanceDOM, 600);
   });

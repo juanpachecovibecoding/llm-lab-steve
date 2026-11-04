@@ -770,23 +770,23 @@ body.resizing-visualization #visualizationResizeBar * {
   box-shadow: 0 0 10px rgba(34, 197, 94, 0.45) !important;
 }
 
-/* 3. Central Retro Pixel Art Grip Handle */
+/* 3. Central Retro Pixel Art Grip Handle (50% compact size) */
 .playlab-splitter-handle {
   position: absolute !important;
   top: 240px !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
-  width: 34px !important;
-  height: 64px !important;
+  width: 20px !important;
+  height: 32px !important;
   line-height: normal !important;
   background: #18181b !important;
-  border: 2px solid #3f3f46 !important;
-  border-radius: 4px !important;
-  box-shadow: 0 0 0 1px #09090b, 0 4px 10px rgba(0, 0, 0, 0.7) !important;
+  border: 1.5px solid #3f3f46 !important;
+  border-radius: 3px !important;
+  box-shadow: 0 0 0 1px #09090b, 0 3px 6px rgba(0, 0, 0, 0.7) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-  padding: 0 4px !important;
+  padding: 0 1.5px !important;
   box-sizing: border-box !important;
   pointer-events: auto !important;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease !important;
@@ -796,10 +796,10 @@ body.resizing-visualization #visualizationResizeBar * {
 /* Arrow indicators inside handle */
 .playlab-splitter-handle .splitter-arrow {
   font-family: 'Courier New', Courier, monospace !important;
-  font-size: 11px !important;
+  font-size: 8px !important;
   font-weight: 900 !important;
   color: #39ff84 !important;
-  text-shadow: 0 0 6px #39ff84, 0 1px 2px #000 !important;
+  text-shadow: 0 0 4px #39ff84, 0 1px 1px #000 !important;
   line-height: 1 !important;
   display: inline-block !important;
   transition: transform 0.2s ease !important;
@@ -809,18 +809,18 @@ body.resizing-visualization #visualizationResizeBar * {
 .playlab-splitter-handle .splitter-grip {
   display: flex !important;
   flex-direction: column !important;
-  gap: 3px !important;
+  gap: 2px !important;
   justify-content: center !important;
   align-items: center !important;
 }
 
 .playlab-splitter-handle .grip-line {
   display: block !important;
-  width: 8px !important;
-  height: 2px !important;
+  width: 4px !important;
+  height: 1.5px !important;
   background: #71717a !important;
-  box-shadow: 0 1px 0 #000, 0 -1px 0 #27272a !important;
-  border-radius: 1px !important;
+  box-shadow: 0 1px 0 #000 !important;
+  border-radius: 0.5px !important;
   transition: background 0.2s ease !important;
 }
 

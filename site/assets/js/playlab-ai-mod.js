@@ -997,7 +997,23 @@
         '.craft-popup #x-close, [style*="rgb(37, 42, 52)"] #x-close { background-color: #334155 !important; border-color: #475569 !important; color: #f1f5f9 !important; }',
         '.craft-popup #x-close:hover, [style*="rgb(37, 42, 52)"] #x-close:hover { background-color: #475569 !important; color: #ffffff !important; }',
         '#x-close i, .x-close i, [id*="x-close"] i, [class*="x-close"] i, button[aria-label="Cerrar"] i, button[aria-label="Close"] i, .fa-xmark, .fa-times { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important; font-style: normal !important; font-weight: 700 !important; display: inline-flex !important; align-items: center !important; justify-content: center !important; line-height: 1 !important; }',
-        '#x-close i::before, .x-close i::before, [id*="x-close"] i::before, [class*="x-close"] i::before, button[aria-label="Cerrar"] i::before, button[aria-label="Close"] i::before, .fa-xmark::before, .fa-times::before { content: "✕" !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important; font-size: 15px !important; font-weight: 700 !important; line-height: 1 !important; display: inline-block !important; color: inherit !important; }'
+        '#x-close i::before, .x-close i::before, [id*="x-close"] i::before, [class*="x-close"] i::before, button[aria-label="Cerrar"] i::before, button[aria-label="Close"] i::before, .fa-xmark::before, .fa-times::before { content: "✕" !important; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important; font-size: 15px !important; font-weight: 700 !important; line-height: 1 !important; display: inline-block !important; color: inherit !important; }',
+        /* === RETRO GAME PIXEL ART BLOCKLY STYLING === */
+        '@font-face { font-family: "Pixelify Sans Local"; src: url("/fonts/pixel/PixelifySans-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }',
+        '@font-face { font-family: "Pixelify Sans Local"; src: url("/fonts/pixel/PixelifySans-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }',
+        '.blocklySvg { image-rendering: pixelated !important; shape-rendering: crispEdges !important; }',
+        '.blocklyPath { stroke: #090d16 !important; stroke-width: 2px !important; stroke-linejoin: miter !important; stroke-linecap: square !important; filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.45)) !important; }',
+        '.blocklySelected .blocklyPath { stroke: #f59e0b !important; stroke-width: 3px !important; filter: drop-shadow(0 0 6px #fbbf24) drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.7)) !important; }',
+        '.blocklyText { font-family: "Pixelify Sans Local", monospace !important; font-size: 12px !important; font-weight: 700 !important; letter-spacing: 0.2px !important; fill: #ffffff !important; text-shadow: 1px 1px 0px #000, 1px 0px 0px #000, 0px 1px 0px #000 !important; }',
+        '.blocklyFieldRect, .blocklyDropdownRect { rx: 0px !important; ry: 0px !important; fill: rgba(0, 0, 0, 0.35) !important; stroke: #090d16 !important; stroke-width: 1px !important; }',
+        '.blocklyDropdownText { fill: #ffffff !important; font-family: "Pixelify Sans Local", monospace !important; font-size: 11.5px !important; font-weight: 700 !important; }',
+        '.blocklyDropdownText tspan { fill: #fbbf24 !important; font-weight: bold !important; }',
+        '.blocklyFlyoutBackground { fill: #1e2530 !important; fill-opacity: 0.98 !important; }',
+        '.blocklyMainBackground { fill: #0d1117 !important; }',
+        '#headers { border-bottom: 2px solid #2d3748 !important; background-color: #1e2530 !important; }',
+        '.blocklyWidgetDiv .goog-menu, .blocklyDropDownDiv { background-color: #1e293b !important; border: 2px solid #0f172a !important; border-radius: 0px !important; box-shadow: 4px 4px 0px #000 !important; font-family: "Pixelify Sans Local", monospace !important; font-size: 12px !important; }',
+        '.goog-menuitem { color: #f1f5f9 !important; font-family: "Pixelify Sans Local", monospace !important; }',
+        '.goog-menuitem-highlight { background-color: #3b82f6 !important; color: #ffffff !important; }'
       ].join('\n');
       document.head.appendChild(customStyle);
     }
@@ -1030,6 +1046,20 @@
     var charSub = document.getElementById('select-character-text');
     if (charSub && charSub.textContent.indexOf('Unidad de') !== -1) {
       charSub.textContent = 'Selecciona tu ingeniero de IA:';
+    }
+
+    // 2c. Retro pixel corners for Blockly paths
+    var blockPaths = document.querySelectorAll('.blocklyPath');
+    for (var bpIdx = 0; bpIdx < blockPaths.length; bpIdx++) {
+      var bp = blockPaths[bpIdx];
+      var d = bp.getAttribute('d');
+      if (d && (d.indexOf('a 8 8') !== -1 || d.indexOf('a 4 4') !== -1)) {
+        d = d.replace(/m 0,8\s+a 8 8 0 0,1 8,-8/g, 'm 0,8 v -2 h 2 v -2 h 2 v -2 h 2 v -2 h 2');
+        d = d.replace(/a 8 8 0 0,1 -8,-8/g, 'h -2 v -2 h -2 v -2 h -2 v -2 h -2 v -2');
+        d = d.replace(/m 0,4\s+a 4 4 0 0,1 4,-4/g, 'm 0,4 v -2 h 2 v -2 h 2');
+        d = d.replace(/a 4 4 0 0,1 -4,-4/g, 'h -2 v -2 h -2 v -2');
+        bp.setAttribute('d', d);
+      }
     }
 
     // 3. Enhance Level Completion Modal (#feedback-dialog)

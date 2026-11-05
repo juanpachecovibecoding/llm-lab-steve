@@ -755,7 +755,7 @@ body.resizing-visualization #visualizationResizeBar * {
   z-index: 85 !important;
   overflow: visible !important;
   transition: background 0.15s ease, box-shadow 0.15s ease !important;
-  animation: playlabRailSubtleBreathe 5s ease-in-out infinite alternate !important;
+  animation: playlabRailSubtleBreathe 2.8s ease-in-out infinite alternate !important;
 }
 
 /* Remove default FontAwesome 3 dots icon */
@@ -769,7 +769,7 @@ body.resizing-visualization #visualizationResizeBar * {
 #visualizationResizeBar.active-drag {
   animation: none !important;
   background: linear-gradient(90deg, #18181b 0%, #1e3a29 45%, #22c55e 50%, #1e3a29 55%, #18181b 100%) !important;
-  box-shadow: 0 0 10px rgba(34, 197, 94, 0.45) !important;
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.55) !important;
 }
 
 /* 3. Central Retro Pixel Art Grip Handle (50% compact size) */
@@ -793,37 +793,33 @@ body.resizing-visualization #visualizationResizeBar * {
   pointer-events: auto !important;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease !important;
   user-select: none !important;
-  animation: playlabHandleSubtleBreathe 5s ease-in-out infinite alternate !important;
+  animation: playlabHandleSubtleBreathe 2.8s ease-in-out infinite alternate !important;
 }
 
-/* Subtle, barely imperceptible phosphor breathing animations */
+/* Clear, breathing phosphor animations (gentle, hypnotic retro pulse) */
 @keyframes playlabRailSubtleBreathe {
-  0%, 25% {
+  0%, 15% {
+    background: linear-gradient(90deg, #18181b 0%, #27272a 45%, #3f3f46 50%, #27272a 55%, #18181b 100%);
     box-shadow: none;
     border-left-color: rgba(255, 255, 255, 0.08);
   }
-  60% {
-    box-shadow: 0 0 6px rgba(34, 197, 94, 0.14), inset 0 0 3px rgba(34, 197, 94, 0.08);
-    border-left-color: rgba(57, 255, 132, 0.15);
-  }
   100% {
-    box-shadow: 0 0 9px rgba(34, 197, 94, 0.22), inset 0 0 4px rgba(34, 197, 94, 0.12);
-    border-left-color: rgba(57, 255, 132, 0.22);
+    background: linear-gradient(90deg, #18181b 0%, #153322 35%, #22c55e 50%, #153322 65%, #18181b 100%);
+    box-shadow: 0 0 14px rgba(34, 197, 94, 0.45), inset 0 0 6px rgba(34, 197, 94, 0.25);
+    border-left-color: rgba(57, 255, 132, 0.45);
   }
 }
 
 @keyframes playlabHandleSubtleBreathe {
-  0%, 25% {
+  0%, 15% {
     border-color: #3f3f46;
+    background: #18181b;
     box-shadow: 0 0 0 1px #09090b, 0 3px 6px rgba(0, 0, 0, 0.7);
   }
-  60% {
-    border-color: #1e5e34;
-    box-shadow: 0 0 0 1px #09090b, 0 3px 6px rgba(0, 0, 0, 0.7), 0 0 5px rgba(57, 255, 132, 0.18);
-  }
   100% {
-    border-color: #22c55e;
-    box-shadow: 0 0 0 1px #09090b, 0 3px 6px rgba(0, 0, 0, 0.7), 0 0 8px rgba(57, 255, 132, 0.26);
+    border-color: #39ff84;
+    background: #0d2315;
+    box-shadow: 0 0 0 1px #09090b, 0 3px 6px rgba(0, 0, 0, 0.7), 0 0 12px rgba(57, 255, 132, 0.55), inset 0 0 6px rgba(57, 255, 132, 0.3);
   }
 }
 
@@ -837,6 +833,18 @@ body.resizing-visualization #visualizationResizeBar * {
   line-height: 1 !important;
   display: inline-block !important;
   transition: transform 0.2s ease !important;
+  animation: playlabArrowSubtleBreathe 2.8s ease-in-out infinite alternate !important;
+}
+
+@keyframes playlabArrowSubtleBreathe {
+  0%, 15% {
+    color: #22c55e;
+    text-shadow: 0 0 3px #22c55e, 0 1px 1px #000;
+  }
+  100% {
+    color: #ffffff;
+    text-shadow: 0 0 8px #39ff84, 0 0 14px #39ff84;
+  }
 }
 
 /* Grip ridged texture */
@@ -856,6 +864,18 @@ body.resizing-visualization #visualizationResizeBar * {
   box-shadow: 0 1px 0 #000 !important;
   border-radius: 0.5px !important;
   transition: background 0.2s ease !important;
+  animation: playlabGripSubtleBreathe 2.8s ease-in-out infinite alternate !important;
+}
+
+@keyframes playlabGripSubtleBreathe {
+  0%, 15% {
+    background: #71717a;
+    box-shadow: 0 1px 0 #000;
+  }
+  100% {
+    background: #39ff84;
+    box-shadow: 0 0 5px #39ff84;
+  }
 }
 
 /* Hover effect on Handle */
